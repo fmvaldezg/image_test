@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Historical Map COG</title>
+    <title>Historical Map</title>
     <script src='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.js'></script>
     <link href='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.css' rel='stylesheet' />
     <style>
@@ -18,23 +18,20 @@
             style: {
                 version: 8,
                 sources: {
-                    'cog-source': {
+                    'tiles-source': {
                         type: 'raster',
                         tiles: [
-                            `https://titiler.xyz/cog/tiles/{z}/{x}/{y}@1x?url=https://fmvaldezg.github.io/image_test/data/output_cog.tif`
+                            './tiles/{z}/{x}/{y}.png'
                         ],
                         tileSize: 256,
-                        minzoom: 0,
-                        maxzoom: 20
+                        minzoom: 10,
+                        maxzoom: 18
                     }
                 },
                 layers: [{
-                    id: 'cog-layer',
+                    id: 'tiles-layer',
                     type: 'raster',
-                    source: 'cog-source',
-                    paint: {
-                        'raster-opacity': 1
-                    }
+                    source: 'tiles-source'
                 }]
             },
             center: [-75.1895566092868108, 39.9941764847279870],
