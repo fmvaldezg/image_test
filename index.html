@@ -34,17 +34,20 @@
                     source: 'tiles-source'
                 }]
             },
-            center: [-75.1895566092868108, 39.9941764847279870],
+            center: [-75.1895566092868108, 39.9941764847279870], // Adjust these coordinates to match your map area
             zoom: 17
         });
 
-        // Add debugging
+        // Add this debug code
         map.on('load', () => {
-            console.log('Map loaded');
-        });
-
-        map.on('error', (e) => {
-            console.error('Map error:', e);
+            // Try to load a tile we know exists
+            fetch('https://felipevaldez.com/image_test/tiles/17/38160/81445.png')
+                .then(response => {
+                    console.log('Tile fetch response:', response.status);
+                })
+                .catch(error => {
+                    console.error('Tile fetch error:', error);
+                });
         });
     </script>
 </body>
