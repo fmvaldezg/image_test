@@ -34,20 +34,48 @@
                     source: 'tiles-source'
                 }]
             },
-            center: [-75.1895566092868108, 39.9941764847279870], // Adjust these coordinates to match your map area
+            // We'll calculate the center based on your tile coordinates
+            center: calculateCenter(38160, 81445, 17), // Will define this function below
             zoom: 17
         });
 
-        // Add this debug code
+        // Function to convert tile coordinates to lat/lon
+        function tile2lng(x, z) {
+            return (x / Math.pow(2, z) * 360 - 180);
+        }
+
+        function tile2lat(y, z) {
+            const n = Math.PI - 2 * Math.PI * y / Math.pow(2, z);
+            return (180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n))));
+        }
+
+        function calculateCenter(x, y, z) {
+            const lng = tile2lng(x, z);
+            const lat = tile2lat(y, z);
+            return [lng, lat];
+        }
+
+        // Add debug logging
         map.on('load', () => {
-            // Try to load a tile we know exists
-            fetch('https://felipevaldez.com/image_test/tiles/17/38160/81445.png')
-                .then(response => {
-                    console.log('Tile fetch response:', response.status);
-                })
-                .catch(error => {
-                    console.error('Tile fetch error:', error);
-                });
+            console.log('Map loaded');
+            // Log the viewport coordinates
+            const bounds = map.getBounds();
+            console.log('Map bounds:', bounds);
+        });
+
+        map.on('sourcedataloading', (e) => {
+            console.log('Loading tile:', e.tile);
+            console.log('Tile URL:', e.url);
+        });
+
+        // Add a click handler to log coordinates
+        map.on('click', (e) => {
+            console.log('Clicked at:', e.lngLat);
+            // Calculate tile coordinates for the clicked point
+            const z = Math.floor(map.getZoom());
+            const x = Math.floor((e.lngLat.lng + 180) / 360 * Math.pow(2, z));
+            const y = Math.floor((1 - Math.log(Math.tan(e.lngLat.lat * Math.PI / 180) + 1 / Math.cos(e.lngLat.lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, z));
+            console.log(`Tile coordinates for zoom ${z}: ${x}/${y}`);
         });
     </script>
 </body>
