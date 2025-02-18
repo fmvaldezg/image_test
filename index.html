@@ -21,7 +21,7 @@
                     'tiles-source': {
                         type: 'raster',
                         tiles: [
-                            './tiles/{z}/{x}/{y}.png'
+                            'https://felipevaldez.com/image_test/tiles/{z}/{x}/{y}.png'
                         ],
                         tileSize: 256,
                         minzoom: 17,
@@ -36,6 +36,15 @@
             },
             center: [-75.1895566092868108, 39.9941764847279870],
             zoom: 17
+        });
+
+        // Add debugging
+        map.on('load', () => {
+            console.log('Map loaded');
+        });
+
+        map.on('error', (e) => {
+            console.error('Map error:', e);
         });
     </script>
 </body>
