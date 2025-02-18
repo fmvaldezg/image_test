@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Historical Map COG</title>
+    <script src='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.js'></script>
+    <link href='https://unpkg.com/maplibre-gl@3.0.0/dist/maplibre-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/pmtiles@2.7.2/dist/index.js"></script>
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: {
+                version: 8,
+                sources: {
+                    'cog-source': {
+                        type: 'raster',
+                        tiles: [
+                            `https://api.cogeo.xyz/cog/tiles/{z}/{x}/{y}?url=https://yourusername.github.io/your-repo/data/map.tif`
+                        ],
+                        tileSize: 256,
+                        minzoom: 0,
+                        maxzoom: 20
+                    }
+                },
+                layers: [{
+                    id: 'cog-layer',
+                    type: 'raster',
+                    source: 'cog-source',
+                    paint: {
+                        'raster-opacity': 1
+                    }
+                }]
+            },
+            center: [YOUR_LONGITUDE, YOUR_LATITUDE],
+            zoom: 12
+        });
+    </script>
+</body>
+</html>
